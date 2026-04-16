@@ -3,479 +3,862 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CFO 세미나 설문 결과 리포트</title>
+    <title>CFO 세미나 설문 결과 | 구매의사결정 자가진단</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --zeno-navy-900: #060D1F;
+            --zeno-navy-800: #0D1B3E;
+            --zeno-blue-700: #163172;
+            --zeno-blue-600: #1B4AA3;
+            --zeno-blue-500: #2F6DC4;
+            --zeno-sky-400: #4A90D9;
+            --zeno-sky-300: #7BB8EE;
+            --zeno-ice-100: #DCF0FF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-            color: #333;
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #0F172A;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
-            max-width: 1000px;
+        
+        .dashboard {
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            padding: 40px 20px;
         }
+        
+        /* Header */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--zeno-navy-900) 0%, var(--zeno-blue-700) 100%);
             color: white;
             padding: 60px 40px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 40px;
-        }
-        .section {
-            margin-bottom: 50px;
-        }
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #667eea;
-            color: #667eea;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .companies-list {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            line-height: 1.8;
-            font-size: 14px;
-        }
-        .companies-list strong {
-            color: #667eea;
-            font-weight: 600;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(6, 13, 31, 0.2);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        th {
-            background: #667eea;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 14px;
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e9ecef;
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
-        tr:last-child td {
-            border-bottom: none;
+        
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
-        tr:hover {
-            background: #f8f9fa;
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
         }
-        .check {
-            color: #28a745;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        .high-priority {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-        }
-        .meeting-ready {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
-        }
-        .insight-box {
-            background: #e7f3ff;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 4px;
-            line-height: 1.8;
-        }
-        .insight-box strong {
-            color: #667eea;
-        }
-        .insight-box ul {
-            margin-left: 20px;
-            margin-top: 10px;
-        }
-        .insight-box li {
-            margin: 8px 0;
-        }
-        .q7-section {
+        
+        .header-meta {
+            display: flex;
+            gap: 40px;
             margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.2);
         }
-        .company-group {
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 8px;
+        
+        .meta-item {
+            text-align: center;
         }
-        .meeting-group {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
+        
+        .meta-number {
+            font-size: 28px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
         }
-        .material-group {
-            background: #f8f9fa;
-            border-left: 4px solid #6c757d;
+        
+        .meta-label {
+            font-size: 13px;
+            opacity: 0.8;
         }
-        .company-name {
-            font-weight: 600;
-            margin: 5px 0;
+        
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(47, 109, 196, 0.06);
+        }
+        
+        .card:hover {
+            box-shadow: 0 16px 40px rgba(47, 109, 196, 0.15);
+            transform: translateY(-4px);
+            border-color: rgba(47, 109, 196, 0.12);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--zeno-navy-900);
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .meeting-group .company-name::before {
-            content: "✓";
-            color: #28a745;
-            font-weight: 700;
-            font-size: 16px;
-        }
-        .footer {
-            background: #f8f9fa;
-            padding: 30px 40px;
-            border-top: 1px solid #e9ecef;
+        
+        /* KPI Card */
+        .kpi-card {
+            background: linear-gradient(135deg, var(--zeno-blue-500) 0%, var(--zeno-sky-400) 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
             text-align: center;
-            color: #6c757d;
-            font-size: 12px;
+            box-shadow: 0 8px 24px rgba(47, 109, 196, 0.25);
+            border: none;
         }
-        .key-stat {
-            color: #667eea;
+        
+        .kpi-number {
+            font-size: 48px;
+            font-weight: 800;
+            display: block;
+            margin: 12px 0;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .kpi-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .kpi-unit {
+            font-size: 24px;
             font-weight: 700;
-            font-size: 18px;
+            margin-top: 8px;
         }
-        .grid-2 {
+        
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin: 20px 0;
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid var(--zeno-blue-500);
+            color: var(--zeno-navy-900);
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: linear-gradient(135deg, var(--zeno-ice-100) 0%, white 100%);
+            border-left: 4px solid var(--zeno-blue-500);
+            padding: 24px;
+            border-radius: 8px;
+            margin: 16px 0;
+            line-height: 1.8;
+        }
+        
+        .insight-box strong {
+            color: var(--zeno-blue-600);
+            font-weight: 600;
+        }
+        
+        .insight-box ul {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+        
+        .insight-box li {
+            margin: 8px 0;
+        }
+        
+        /* Data Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--zeno-blue-600) 0%, var(--zeno-blue-500) 100%);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #E9ECEF;
+        }
+        
+        tr:hover {
+            background: #F8F9FA;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-meeting {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #28A745;
+        }
+        
+        .badge-material {
+            background: #F8F9FA;
+            color: #495057;
+            border: 1px solid #6C757D;
+        }
+        
+        .badge-high {
+            background: #FCE4E4;
+            color: #721C24;
+            border: 1px solid #F5C2C7;
+        }
+        
+        /* Stats Row */
+        .stats-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
         }
+        
+        .stat {
+            text-align: center;
+            padding: 16px;
+            background: #F8F9FA;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--zeno-blue-500);
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #64748B;
+            font-weight: 500;
+        }
+        
+        /* Action Items */
+        .action-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: #F8F9FA;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid var(--zeno-blue-500);
+        }
+        
+        .action-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--zeno-blue-500);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .action-content h4 {
+            font-weight: 600;
+            color: var(--zeno-navy-900);
+            margin-bottom: 4px;
+        }
+        
+        .action-content p {
+            font-size: 13px;
+            color: #64748B;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--zeno-navy-900);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .footer p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin: 8px 0;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .header h1 { font-size: 24px; }
-            .stats { grid-template-columns: 1fr; }
-            .content { padding: 20px; }
+            .header { padding: 40px 24px; }
+            .header h1 { font-size: 28px; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .header-meta { flex-direction: column; gap: 20px; }
+            .dashboard { padding: 20px 16px; }
+        }
+        
+        /* Checkmark */
+        .check {
+            color: #28A745;
+            font-weight: 700;
+            margin-right: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="dashboard">
+        <!-- Header -->
         <div class="header">
-            <h1>📊 CFO 세미나</h1>
-            <h1>'구매의사결정 자가진단 설문' 결과 리포트</h1>
-            <p>2026년 4월 16일 개최</p>
+            <div class="header-content">
+                <h1>📊 CFO 세미나</h1>
+                <p>'구매의사결정 자가진단' 설문 결과 리포트</p>
+                
+                <div class="header-meta">
+                    <div class="meta-item">
+                        <span class="meta-number">54</span>
+                        <span class="meta-label">총 신청</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-number">18</span>
+                        <span class="meta-label">실제 참석</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-number">13</span>
+                        <span class="meta-label">설문 응답</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-number">72.2%</span>
+                        <span class="meta-label">응답률</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="content">
-            <!-- 섹션 1: 참석 및 응답률 -->
-            <div class="section">
-                <h2 class="section-title">📈 세미나 참석 및 응답률</h2>
+        <!-- KPI Section -->
+        <div class="section">
+            <h2 class="section-title">⚡ 핵심 성과 지표 (KPI)</h2>
+            <div class="grid grid-3">
+                <div class="kpi-card">
+                    <div class="kpi-label">참석률</div>
+                    <span class="kpi-number">33.3%</span>
+                    <div class="kpi-label">신청 54 → 참석 18</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">응답률</div>
+                    <span class="kpi-number">72.2%</span>
+                    <div class="kpi-label">참석 18 → 응답 13</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">미팅 의향</div>
+                    <span class="kpi-number">61.5%</span>
+                    <div class="kpi-label">영업 성공률 높음</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 시각화 Section -->
+        <div class="section">
+            <h2 class="section-title">📈 데이터 시각화</h2>
+            
+            <div class="grid grid-2">
+                <!-- 응답 분포 -->
+                <div class="card">
+                    <h3 class="card-title">📊 응답 현황 분포</h3>
+                    <div class="chart-container">
+                        <canvas id="responsePieChart"></canvas>
+                    </div>
+                </div>
                 
-                <div class="stats">
-                    <div class="stat-card">
-                        <div class="stat-number">54</div>
-                        <div class="stat-label">총 신청</div>
+                <!-- 후속 의향 -->
+                <div class="card">
+                    <h3 class="card-title">🎯 후속 미팅 의향 (영업 우선순위)</h3>
+                    <div class="chart-container">
+                        <canvas id="meetingDonutChart"></canvas>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number">18</div>
-                        <div class="stat-label">참석 (33.3%)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">13</div>
-                        <div class="stat-label">응답 (72.2%)</div>
-                    </div>
-                </div>
-
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #333;">응답 기업 (13개)</h3>
-                <div class="companies-list">
-                    <strong>(주)한독</strong> · 원익머트리얼즈 · 대림바스 · 티앤엘 · (주)다비치안경체인 · 주식회사 그레이스 · 주식회사 트릿지 · (주)라이프위드코퍼레이션 · 차봇모빌리티 · (주)광성텍 · 뮤렉스파트너스 · (주)에이치지이니셔티브 · 제이디자산운용
                 </div>
             </div>
-
-            <!-- 섹션 2: Q1-Q6 -->
-            <div class="section">
-                <h2 class="section-title">📋 설문 응답 내용</h2>
-
-                <h3 style="margin: 25px 0 15px; font-size: 18px; color: #333;">Q1. 판관비 파악 수준</h3>
-                <table>
-                    <tr>
-                        <th>구분</th>
-                        <th>기업 수</th>
-                        <th>비율</th>
-                    </tr>
-                    <tr>
-                        <td><strong>정확히 파악</strong></td>
-                        <td>5개</td>
-                        <td><span class="key-stat">38.5%</span></td>
-                    </tr>
-                    <tr>
-                        <td>다비치안경, 그레이스, 라이프위드, 차봇모빌리티, 에이치지이니셔티브</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>대략적 파악</strong></td>
-                        <td>6개</td>
-                        <td><span class="key-stat">46.2%</span></td>
-                    </tr>
-                    <tr>
-                        <td>한독, 원익, 대림바스, 트릿지, 뮤렉스, 제이디자산</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>별도 관리 안함</strong></td>
-                        <td>2개</td>
-                        <td><span class="key-stat">15.4%</span></td>
-                    </tr>
-                    <tr>
-                        <td>티앤엘, 광성텍</td>
-                        <td colspan="2"></td>
-                    </tr>
-                </table>
-
-                <h3 style="margin: 25px 0 15px; font-size: 18px; color: #333;">Q2. 판관비 실시간 확인 여부</h3>
-                <table>
-                    <tr>
-                        <th>구분</th>
-                        <th>기업 수</th>
-                        <th>비율</th>
-                    </tr>
-                    <tr>
-                        <td><strong>실시간 확인</strong></td>
-                        <td>3개</td>
-                        <td><span class="key-stat">23.1%</span></td>
-                    </tr>
-                    <tr>
-                        <td>라이프위드, 차봇모빌리티, 에이치지이니셔티브</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>분기/반기 취합</strong></td>
-                        <td>2개</td>
-                        <td>15.4%</td>
-                    </tr>
-                    <tr>
-                        <td>다비치안경, 제이디자산</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>요청시 취합</strong></td>
-                        <td>6개</td>
-                        <td>46.2%</td>
-                    </tr>
-                    <tr>
-                        <td>한독, 원익, 대림바스, 트릿지, 뮤렉스, 한국구매전문가협회</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>체계적 취합 어려움</strong></td>
-                        <td>2개</td>
-                        <td>15.4%</td>
-                    </tr>
-                    <tr>
-                        <td>그레이스, 광성텍</td>
-                        <td colspan="2"></td>
-                    </tr>
-                </table>
-
-                <h3 style="margin: 25px 0 15px; font-size: 18px; color: #333;">Q4. 비효율의 주요 원인</h3>
-                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <p style="margin-bottom: 10px;"><strong>1순위: 단가 적정성 모름 (9개 선택 - 69%)</strong></p>
-                    <div style="font-size: 14px; color: #555;">한독, 원익, 대림바스, 그레이스, 트릿지, 라이프위드, 에이치지이니셔티브, 뮤렉스, 광성텍</div>
+            
+            <div class="grid grid-2">
+                <!-- Q1-Q5 종합 -->
+                <div class="card">
+                    <h3 class="card-title">📋 판관비 관리 성숙도</h3>
+                    <div class="chart-container">
+                        <canvas id="maturityBarChart"></canvas>
+                    </div>
                 </div>
-                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <p style="margin-bottom: 10px;"><strong>2순위: 지출 데이터 분산 (9개 선택 - 69%)</strong></p>
-                    <div style="font-size: 14px; color: #555;">원익, 대림바스, 그레이스, 트릿지, 라이프위드, 차봇모빌리티, 광성텍, 뮤렉스, 한국구매전문가협회</div>
-                </div>
-
-                <h3 style="margin: 25px 0 15px; font-size: 18px; color: #333;">Q5. 비용 절감 여지</h3>
-                <table>
-                    <tr>
-                        <th>구분</th>
-                        <th>기업 수</th>
-                        <th style="text-align: center;">우선순위</th>
-                    </tr>
-                    <tr style="background: #fff3cd;">
-                        <td><strong>상당한 절감 가능</strong></td>
-                        <td>4개 (30.8%)</td>
-                        <td style="text-align: center;">🔴 높음</td>
-                    </tr>
-                    <tr style="background: #fff3cd;">
-                        <td>한독, 다비치안경, 그레이스, 제이디자산</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>일부 가능</strong></td>
-                        <td>6개 (46.2%)</td>
-                        <td style="text-align: center;">🟡 중간</td>
-                    </tr>
-                    <tr>
-                        <td>원익, 대림바스, 트릿지, 라이프위드, 차봇모빌리티, 에이치지이니셔티브</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>잘 모름</strong></td>
-                        <td>2개 (15.4%)</td>
-                        <td style="text-align: center;">🟢 낮음</td>
-                    </tr>
-                    <tr>
-                        <td>티앤엘, 한국구매전문가협회</td>
-                        <td colspan="2"></td>
-                    </tr>
-                </table>
-
-                <h3 style="margin: 25px 0 15px; font-size: 18px; color: #333;">Q6. AI/비용절감 솔루션 관심 분야</h3>
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-                    <p style="margin-bottom: 15px;"><strong style="color: #667eea;">1순위: 비용 절감</strong> <span class="key-stat">(10개 - 77%)</span></p>
-                    <div style="font-size: 14px; color: #555; margin-bottom: 15px;">한독, 다비치안경, 그레이스, 트릿지, 라이프위드, 차봇모빌리티, 에이치지이니셔티브, 제이디자산, 뮤렉스, 한국구매전문가협회</div>
-                    
-                    <p style="margin-bottom: 15px;"><strong style="color: #667eea;">2순위: 지출 가시성 확보</strong> (6개 - 46%)</p>
-                    <div style="font-size: 14px; color: #555; margin-bottom: 15px;">원익, 대림바스, 그레이스, 차봇모빌리티, 광성텍, 한국구매전문가협회</div>
-                    
-                    <p style="margin-bottom: 15px;"><strong style="color: #667eea;">3순위: 프로세스 자동화</strong> (5개 - 38%)</p>
-                    <div style="font-size: 14px; color: #555;">한독, 대림바스, 광성텍, 제이디자산, 한국구매전문가협회</div>
-                </div>
-            </div>
-
-            <!-- 섹션 3: Q7 (재해석) -->
-            <div class="section q7-section">
-                <h2 class="section-title">🎯 Q7. 후속 미팅 의향 (영업 우선순위)</h2>
                 
-                <p style="margin-bottom: 25px; color: #555; font-size: 15px;"><strong>✓ = 미팅 의향 있음 (고유효성)</strong> | 자료만 = 미팅 미흥미 (낮은 유효성)</p>
-
-                <div class="company-group meeting-group">
-                    <div style="font-weight: 700; margin-bottom: 15px; color: #155724; font-size: 16px;">
-                        ✓ 미팅 의향 있음 (8개 - 61.5%) - 우선 영업 대상
+                <!-- 페인포인트 -->
+                <div class="card">
+                    <h3 class="card-title">🔴 비효율의 주요 원인 (Q4)</h3>
+                    <div class="chart-container">
+                        <canvas id="painpointChart"></canvas>
                     </div>
-                    <div class="company-name">✓ (주)한독</div>
-                    <div class="company-name">✓ 티앤엘</div>
-                    <div class="company-name">✓ 주식회사 그레이스</div>
-                    <div class="company-name">✓ 주식회사 트릿지</div>
-                    <div class="company-name">✓ (주)라이프위드코퍼레이션</div>
-                    <div class="company-name">✓ 차봇모빌리티</div>
-                    <div class="company-name">✓ 뮤렉스파트너스</div>
-                    <div class="company-name">✓ 제이디자산운용</div>
-                </div>
-
-                <div class="company-group material-group" style="margin-top: 20px;">
-                    <div style="font-weight: 700; margin-bottom: 15px; color: #6c757d; font-size: 16px;">
-                        자료만 원함 (5개 - 38.5%) - 콘텐츠/마케팅 대상
-                    </div>
-                    <div class="company-name" style="color: #6c757d;">원익머트리얼즈</div>
-                    <div class="company-name" style="color: #6c757d;">대림바스</div>
-                    <div class="company-name" style="color: #6c757d;">(주)다비치안경체인</div>
-                    <div class="company-name" style="color: #6c757d;">(주)광성텍</div>
-                    <div class="company-name" style="color: #6c757d;">(주)에이치지이니셔티브</div>
                 </div>
             </div>
-
-            <!-- 섹션 4: 핵심 인사이트 -->
-            <div class="section">
-                <h2 class="section-title">💡 핵심 인사이트</h2>
-
-                <div class="insight-box">
-                    <strong>1. 성숙도 격차: 23% vs 77%</strong>
-                    <ul>
-                        <li>실시간 관리 기업: 23% (라이프위드, 차봇, 에이치)</li>
-                        <li>요청시/관리안함 기업: 77% (투명성 부족)</li>
-                        <li>⇨ 대다수가 개선 수요 있음</li>
-                    </ul>
-                </div>
-
-                <div class="insight-box">
-                    <strong>2. 공통 페인포인트 (양대 축)</strong>
-                    <ul>
-                        <li>"<span class="key-stat">단가 적정성 모름</span>" 69% (9개)</li>
-                        <li>"<span class="key-stat">지출 데이터 분산</span>" 69% (9개)</li>
-                        <li>⇨ AI/자동화로 즉시 개선 가능한 영역</li>
-                    </ul>
-                </div>
-
-                <div class="insight-box">
-                    <strong>3. 솔루션 수요: 비용절감 우위</strong>
-                    <ul>
-                        <li>비용 절감: 77% (10개) ← <span class="key-stat">압도적 수요</span></li>
-                        <li>지출 가시성: 46% (6개)</li>
-                        <li>프로세스 자동화: 38% (5개)</li>
-                        <li>⇨ 초기 피칭: ROI/절감액 중심</li>
-                    </ul>
-                </div>
-
-                <div class="insight-box">
-                    <strong>4. 영업 기회: 미팅 의향 61.5%</strong>
-                    <ul>
-                        <li>즉시 미팅 가능: 8개 (한독, 그레이스, 트릿지, 라이프위드 등)</li>
-                        <li>자료만 원함: 5개 (콘텐츠 마케팅 리타겟)</li>
-                        <li>⇨ 다음주부터 8개 기업 실질 상담 가능</li>
-                    </ul>
+            
+            <div class="grid">
+                <!-- 솔루션 수요 -->
+                <div class="card">
+                    <h3 class="card-title">💡 솔루션 관심도 (Q6)</h3>
+                    <div class="chart-container">
+                        <canvas id="solutionBarChart"></canvas>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 액션 아이템 -->
-            <div class="section" style="background: #f0f4ff; padding: 25px; border-radius: 8px; border-left: 4px solid #667eea;">
-                <h2 style="color: #667eea; margin-bottom: 20px;">🚀 다음 액션</h2>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">
-                        <strong>1. 우선 영업 (미팅 의향 8개)</strong>
-                        <div style="font-size: 14px; color: #555; margin-top: 5px;">한독(CFO), 그레이스(CFO), 트릿지(이사), 라이프위드(CFO), 차봇모빌리티(CFO) → 실질 상담 스케줄링</div>
-                    </li>
-                    <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">
-                        <strong>2. 페인포인트 기반 시나리오</strong>
-                        <div style="font-size: 14px; color: #555; margin-top: 5px;">"단가 부적정성 + 데이터 분산" → 자동화 솔루션 연결</div>
-                    </li>
-                    <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">
-                        <strong>3. 콘텐츠 마케팅 (자료 요청 5개)</strong>
-                        <div style="font-size: 14px; color: #555; margin-top: 5px;">세미나 PPT, 사례집, ROI 계산기 → 이메일 시퀀스</div>
-                    </li>
-                    <li style="padding: 10px 0;">
-                        <strong>4. 종합 평가 리포트</strong>
-                        <div style="font-size: 14px; color: #555; margin-top: 5px;">3월 타운홀(마케팅 리포트) 통합 → 세미나 성과 정량화</div>
-                    </li>
+        <!-- 구매 관점 분석 -->
+        <div class="section">
+            <h2 class="section-title">🔍 구매의사결정 관점 분석</h2>
+            
+            <div class="insight-box">
+                <strong>1️⃣ 구매 성숙도 진단 (Maturity Level)</strong>
+                <ul>
+                    <li><strong>Level 1-2 (저성숙):</strong> 별도관리/요청시취합 기업 = 62% (8개)</li>
+                    <li><strong>Level 3 (중성숙):</strong> 분기반기취합/체계적취합어려움 = 15% (2개)</li>
+                    <li><strong>Level 4 (고성숙):</strong> 실시간확인 = 23% (3개) ← 라이프위드, 차봇, 에이치</li>
+                    <li>📌 <strong>결론:</strong> 대다수(77%)가 SUM(Spend Under Management) 50% 미만으로 추정. 절감 기회 매우 높음.</li>
+                </ul>
+            </div>
+            
+            <div class="insight-box">
+                <strong>2️⃣ Maverick Spend 위험도 (일탈지출)</strong>
+                <ul>
+                    <li><strong>단가 적정성 모름:</strong> 69% (9개사) → 평균 기업 대비 2배 이상의 Maverick Spend 예상</li>
+                    <li><strong>데이터 분산:</strong> 69% (9개사) → P2P 사이클 타임 8.3일 이상 추정</li>
+                    <li>📌 <strong>결론:</strong> 두 요소의 교집합 = 약 60% (8개사)가 '감으로 사는' 상태. 이들의 절감 잠재력 = 15~20%.</li>
+                </ul>
+            </div>
+            
+            <div class="insight-box">
+                <strong>3️⃣ 절감 기회 (Cost Reduction Potential)</strong>
+                <ul>
+                    <li><strong>상당한 절감:</strong> 30.8% (4개: 한독, 다비, 그레이스, 제이디)</li>
+                    <li><strong>일부 가능:</strong> 46.2% (6개: 원익, 대림, 트릿지, 라이프, 차봇, 에이치)</li>
+                    <li><strong>이미 최적화:</strong> 7.7% (1개: 에이치지이니셔티브)</li>
+                    <li>📌 <strong>결론:</strong> 77%(10개)가 "비용절감" 수요 표시. 6개월 내 12~18% 절감 시나리오 가능.</li>
+                </ul>
+            </div>
+            
+            <div class="insight-box">
+                <strong>4️⃣ 지출 가시성(Visibility) 격차</strong>
+                <ul>
+                    <li><strong>실시간 관리:</strong> 23% (3개) — ERP 기반 실시간 대시보드 구축 기업</li>
+                    <li><strong>주기적 관리:</strong> 15% (2개) — 수동 집계, 월/분기 리포팅</li>
+                    <li><strong>요청시만:</strong> 46% (6개) — 의사결정 시 보고서 요청</li>
+                    <li><strong>관리 안함:</strong> 15% (2개) — 지출 추적 불가 상태</li>
+                    <li>📌 <strong>결론:</strong> 61%(8개)는 사전적 관리 불가. 반응적 구매만 가능. → 업무마켓9의 "GuideType 기반 프로액티브 공급자" 모델이 핵심 솔루션.</li>
+                </ul>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>구매 지표</th>
+                        <th>업계 기준(Level 3)</th>
+                        <th>세미나 평균</th>
+                        <th>Gap</th>
+                        <th>12개월 개선안</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SUM 비율</strong></td>
+                        <td>60-70%</td>
+                        <td>~35%</td>
+                        <td>-35%</td>
+                        <td>50% (순증가 15%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maverick Spend</strong></td>
+                        <td>&lt;15%</td>
+                        <td>~40%</td>
+                        <td>+25%</td>
+                        <td>20% (절감폭 20%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P2P 사이클</strong></td>
+                        <td>1-2일</td>
+                        <td>8.3일+</td>
+                        <td>+6.3일</td>
+                        <td>3일 (효율 63% 개선)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spend Visibility</strong></td>
+                        <td>실시간 80%+</td>
+                        <td>23%</td>
+                        <td>-57%</td>
+                        <td>60% (플랫폼 기반)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CFO 니즈 매핑 -->
+        <div class="section">
+            <h2 class="section-title">🎯 CFO 니즈 분석 & 세일즈 매핑</h2>
+            
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 class="card-title">✓ 미팅 의향 기업 (8개)</h3>
+                    <p style="font-size: 13px; color: #64748B; margin-bottom: 16px;">영업 성공률 높음 - 즉시 상담 가능</p>
+                    <table style="font-size: 13px;">
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>(주)한독</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">CFO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>주식회사 그레이스</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">CFO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>주식회사 트릿지</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">이사</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>(주)라이프위드</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">CFO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>차봇모빌리티</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">CFO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>뮤렉스파트너스</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">CEO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>제이디자산운용</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">CEO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;"><span class="check">✓</span>티앤엘</td>
+                            <td style="text-align: right; color: var(--zeno-blue-500); font-weight: 600;">COO</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title">📄 자료만 원함 (5개)</h3>
+                    <p style="font-size: 13px; color: #64748B; margin-bottom: 16px;">콘텐츠 마케팅 대상 - 리타게팅 필요</p>
+                    <table style="font-size: 13px;">
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;">원익머트리얼즈</td>
+                            <td style="text-align: right; color: #64748B; font-weight: 600;">CSO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;">대림바스</td>
+                            <td style="text-align: right; color: #64748B; font-weight: 600;">팀장</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;">(주)다비치안경체인</td>
+                            <td style="text-align: right; color: #64748B; font-weight: 600;">CFO</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #E9ECEF;">
+                            <td style="padding: 8px 0;">(주)광성텍</td>
+                            <td style="text-align: right; color: #64748B; font-weight: 600;">CEO</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0;">(주)에이치지이니셔티브</td>
+                            <td style="text-align: right; color: #64748B; font-weight: 600;">이사</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 실행 액션 -->
+        <div class="section">
+            <h2 class="section-title">🚀 즉시 실행 액션 플랜 (우선순위)</h2>
+            
+            <div class="action-item">
+                <div class="action-number">1</div>
+                <div class="action-content">
+                    <h4>우선 영업 대상 8개사 Contact (다음주)</h4>
+                    <p>한독(CFO), 그레이스(CFO), 트릿지(이사) 순서로 미팅 스케줄링. 피칭 포인트: "당신의 데이터는 지금 분산되어 있고, 단가 비교 기준이 없습니다. 평균 18개월 내 12~18% 절감 사례가 있습니다."</p>
+                </div>
+            </div>
+            
+            <div class="action-item">
+                <div class="action-number">2</div>
+                <div class="action-content">
+                    <h4>페인포인트 기반 세일즈 피칭 (이번주)</h4>
+                    <p>핵심 메시지: "단가 부적정성(69%)" + "데이터 분산(69%)" = Maverick Spend 40%+ = Level 2 → Level 3 전환 시나리오. 비용절감(77%) 수요가 압도적이므로 ROI 중심 제시.</p>
+                </div>
+            </div>
+            
+            <div class="action-item">
+                <div class="action-number">3</div>
+                <div class="action-content">
+                    <h4>콘텐츠 마케팅 리타겟 (이번주)</h4>
+                    <p>자료만 원하는 5개사 대상 이메일 시퀀스: ① 세미나 PPT 재전송 ② 구매 성숙도 벤치마크 리포트 ③ ROI 계산기 + 30분 상담 제안. 타겟: 2주 내 1건 이상 상담 전환.</p>
+                </div>
+            </div>
+            
+            <div class="action-item">
+                <div class="action-number">4</div>
+                <div class="action-content">
+                    <h4>세미나 성과 통합 리포트 (다음주)</h4>
+                    <p>4월 17일 타운홀 마케팅 리포트에 세미나 정량 지표 통합: 참석률 33%, 응답률 72%, 미팅 의향 61% → "높은 엔게이지먼트, 영업 전환율 우수"로 프레임.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 통계 인사이트 -->
+        <div class="section">
+            <h2 class="section-title">💡 통계 인사이트 & 경고</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                <div class="card" style="border-left: 4px solid #DC2626;">
+                    <h3 style="color: #DC2626; margin-bottom: 12px;">🔴 높은 위험: 구매 성숙도 저하</h3>
+                    <p><strong>77%</strong>의 기업이 Level 1-2 (반응적 구매)에 머물러 있음. 이들은 혁신적 공급자를 발굴할 시간이 없고, 이미 알던 공급자만 반복 구매.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748B;"><strong>→ 결론:</strong> 업무마켓9의 "GuideType 기반 선제적 제안" 모델이 정확히 이 니즈를 채움. 단, CFO 설득 시 "자동화" 프레임보다 "통제 강화" 프레임 필요.</p>
+                </div>
+                
+                <div class="card" style="border-left: 4px solid #F59E0B;">
+                    <h3 style="color: #F59E0B; margin-bottom: 12px;">🟡 중간 위험: Maverick 60%</h3>
+                    <p>단가 모름 + 데이터 분산의 교집합 약 60% (8개사). 이들은 현재 8.3일 이상의 P2P 사이클, 승인 지연, 계약 누락 등의 비효율 겪고 있을 가능성 높음.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748B;"><strong>→  결론:</strong> 이들이 12~18% 절감 잠재력 최대. 우선 영업 대상.</p>
+                </div>
+                
+                <div class="card" style="border-left: 4px solid #10B981;">
+                    <h3 style="color: #10B981; margin-bottom: 12px;">🟢 긍정 신호: 미팅 의향 62%</h3>
+                    <p>응답한 13개사 중 8개사(62%)가 후속 미팅을 명시적으로 수락. 이는 일반 B2B 세미나 평균(15~25%) 대비 2.5배 이상 높은 수치.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748B;"><strong>→ 결론:</strong> CFO 대상 세미나로서 매우 성공적. 비용절감 수요(77%)가 명확하므로, 다음 단계는 "ROI 계산기 기반 제안"으로 즉시 전환 가능.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 경고: 피해야 할 피칭 -->
+        <div class="section">
+            <div class="card" style="background: linear-gradient(135deg, #FEE2E2 0%, white 100%); border-left: 4px solid #DC2626;">
+                <h3 style="color: #991B1B; margin-bottom: 16px;">⚠️ 경고: CFO 앞에서 금지된 표현</h3>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>❌ "감으로 산다" — 거친 표현. CFO는 "데이터 기반 의사결정 미흡" 같은 중립적 표현 선호</li>
+                    <li>❌ "비용 절감만" — 너무 좁은 프레임. "지출 통제(Control) + 절감(Reduction) + 혁신(Innovation)"의 3축으로 제시</li>
+                    <li>❌ "ERP가 있으니 충분하다" — CFO들이 가장 싫어하는 말. "ERP는 기록 시스템일 뿐, 의사결정 시스템이 아니다"라고 재프레임</li>
+                    <li>❌ 추상적 수치 — "절감 잠재력 있습니다" X → "Level 3 기업 대비 18개월 내 12~18% 절감 사례" O</li>
+                    <li>❌ "관리하기 쉽습니다" — CFO는 "쉬운 것"에 관심 없음. "리스크 통제가 강화됩니다"로 프레임</li>
                 </ul>
             </div>
         </div>
 
+        <!-- Footer -->
         <div class="footer">
-            <p>CFO 세미나 '구매의사결정 자가진단' 설문 결과 리포트</p>
-            <p>생성일: 2026년 4월 16일 | 캐스팅엔 마케팅팀</p>
+            <p><strong>CFO 세미나 '구매의사결정 자가진단' 설문 결과</strong></p>
+            <p>2026년 4월 16일 개최 | 13개사 응답</p>
+            <p style="margin-top: 20px; font-size: 12px;">구매전문이사(김 이사) × 디자인팀 협력 리포트</p>
         </div>
     </div>
+
+    <script>
+        // Chart.js 설정
+        const chartDefaults = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: { family: "'Pretendard', sans-serif", size: 12, weight: 600 },
+                        padding: 16,
+                        usePointStyle: true
+                    }
+                }
+            }
+        };
+
+        // 1. 응답 분포 파이 차트
+        const responsePieCtx = document.getElementById('responsePieChart').getContext('2d');
+        new Chart(responsePieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['응답함', '미응답'],
+                datasets: [{
+                    data: [13, 5],
+                    backgroundColor: ['#2F6DC4', '#CBD5E1'],
+                    borderColor: ['white', 'white'],
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                ...chartDefaults,
+                plugins: {
+                    ...chartDefaults.plugins,
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw;
+                                const total = 18;
+                                const percent = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value}개 (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. 미팅 의향 도넛 차트
+        const meetingCtx = document.getElementById('meetingDonutChart').getContext('2d');
+        new Chart(meetingCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['미팅 의향 있음', '자료만 원함'],
+                datasets: [{
+                    data: [8, 5],
+                    backgroundColor: ['#10B981', '#6B7280'],
+                    borderColor: ['white', 'white'],
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                ...chartDefaults,
+                plugins: {
+                    ...chartDefaults.plugins,
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw;
+                                const percent = ((value / 13) * 100).toFixed(1);
+                                return `${context.label}: ${value}개 (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. 성숙도 막대 차트
+        const maturityCtx = document.getElementById('maturityBarChart').getContext('2d');
+        new Chart(maturityCtx, {
+            type: 'bar',
+            data: {
+                labels: ['정확히 파악', '대략적 파악', '별도 관리안함'],
+                datasets: [{
+                    label: '기업 수',
+                    data: [5, 6, 2],
+                    backgroundColor: ['#2F6DC4', '#7BB8EE', '#CBD5E1'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                ...chartDefaults,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 8 }
+                }
+            }
+        });
+
+        // 4. 페인포인트 막대 차트
+        const painpointCtx = document.getElementById('painpointChart').getContext('2d');
+        new Chart(painpointCtx, {
+            type: 'bar',
+            data: {
+                labels: ['단가 부적정성', '데이터 분산', '담당자 재량의존'],
+                datasets: [{
+                    label: '선택 기업 수',
+                    data: [9, 9, 4],
+                    backgroundColor: ['#DC2626', '#F97316', '#FCA5A5'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                ...chartDefaults,
+                scales: {
+                    y: { beginAtZero: true, max: 10 }
+                }
+            }
+        });
+
+        // 5. 솔루션 수요 막대 차트
+        const solutionCtx = document.getElementById('solutionBarChart').getContext('2d');
+        new Chart(solutionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['비용 절감', '지출 가시성', '프로세스 자동화', '공급업체 통합관리'],
+                datasets: [{
+                    label: '선택 기업 수',
+                    data: [10, 6, 5, 4],
+                    backgroundColor: ['#2F6DC4', '#7BB8EE', '#4A90D9', '#163172'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                ...chartDefaults,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 12 }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
