@@ -412,9 +412,9 @@
                     <div class="kpi-label">참석 18 → 응답 13</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">미팅 의향</div>
+                    <div class="kpi-label">의향 확인</div>
                     <span class="kpi-number">61.5%</span>
-                    <div class="kpi-label">영업 성공률 높음</div>
+                    <div class="kpi-label">추가 얘기 해볼 의향 있음</div>
                 </div>
             </div>
         </div>
@@ -427,134 +427,52 @@
                 <!-- 응답 분포 -->
                 <div class="card">
                     <h3 class="card-title">📊 응답 현황 분포</h3>
+                    <p style="font-size: 12px; color: #64748B; margin: -12px 0 16px; font-weight: 500;">전체 참석자(18명) 중 설문 응답 현황</p>
                     <div class="chart-container">
                         <canvas id="responsePieChart"></canvas>
                     </div>
                 </div>
-                
+
                 <!-- 후속 의향 -->
                 <div class="card">
-                    <h3 class="card-title">🎯 후속 미팅 의향 (영업 우선순위)</h3>
+                    <h3 class="card-title">🎯 의향 확인 (영업 우선순위)</h3>
+                    <p style="font-size: 12px; color: #64748B; margin: -12px 0 16px; font-weight: 500;">Q7. 귀사와 유사한 규모의 판관비 구조 재설계 사례를 공유해 드릴까요?</p>
                     <div class="chart-container">
                         <canvas id="meetingDonutChart"></canvas>
                     </div>
                 </div>
             </div>
-            
+
             <div class="grid grid-2">
                 <!-- Q1-Q5 종합 -->
                 <div class="card">
                     <h3 class="card-title">📋 판관비 관리 성숙도</h3>
+                    <p style="font-size: 12px; color: #64748B; margin: -12px 0 16px; font-weight: 500;">Q1. 판관비가 매출 대비 몇 % 수준인지 파악하고 계십니까?</p>
                     <div class="chart-container">
                         <canvas id="maturityBarChart"></canvas>
                     </div>
                 </div>
-                
+
                 <!-- 페인포인트 -->
                 <div class="card">
-                    <h3 class="card-title">🔴 비효율의 주요 원인 (Q4)</h3>
+                    <h3 class="card-title">🔴 비효율의 주요 원인</h3>
+                    <p style="font-size: 12px; color: #64748B; margin: -12px 0 16px; font-weight: 500;">Q4. 판관비 지출에서 가장 큰 비효율은 무엇이라고 생각하십니까?</p>
                     <div class="chart-container">
                         <canvas id="painpointChart"></canvas>
                     </div>
                 </div>
             </div>
-            
+
             <div class="grid">
                 <!-- 솔루션 수요 -->
                 <div class="card">
-                    <h3 class="card-title">💡 솔루션 관심도 (Q6)</h3>
+                    <h3 class="card-title">💡 솔루션 관심도</h3>
+                    <p style="font-size: 12px; color: #64748B; margin: -12px 0 16px; font-weight: 500;">Q6. 판관비 구조 재설계에서 가장 관심 있는 영역은?</p>
                     <div class="chart-container">
                         <canvas id="solutionBarChart"></canvas>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- 구매 관점 분석 -->
-        <div class="section">
-            <h2 class="section-title">🔍 구매의사결정 관점 분석</h2>
-            
-            <div class="insight-box">
-                <strong>1️⃣ 구매 성숙도 진단 (Maturity Level)</strong>
-                <ul>
-                    <li><strong>Level 1-2 (저성숙):</strong> 별도관리/요청시취합 기업 = 62% (8개)</li>
-                    <li><strong>Level 3 (중성숙):</strong> 분기반기취합/체계적취합어려움 = 15% (2개)</li>
-                    <li><strong>Level 4 (고성숙):</strong> 실시간확인 = 23% (3개) ← 라이프위드, 차봇, 에이치</li>
-                    <li>📌 <strong>결론:</strong> 대다수(77%)가 SUM(Spend Under Management) 50% 미만으로 추정. 절감 기회 매우 높음.</li>
-                </ul>
-            </div>
-            
-            <div class="insight-box">
-                <strong>2️⃣ Maverick Spend 위험도 (일탈지출)</strong>
-                <ul>
-                    <li><strong>단가 적정성 모름:</strong> 69% (9개사) → 평균 기업 대비 2배 이상의 Maverick Spend 예상</li>
-                    <li><strong>데이터 분산:</strong> 69% (9개사) → P2P 사이클 타임 8.3일 이상 추정</li>
-                    <li>📌 <strong>결론:</strong> 두 요소의 교집합 = 약 60% (8개사)가 '감으로 사는' 상태. 이들의 절감 잠재력 = 15~20%.</li>
-                </ul>
-            </div>
-            
-            <div class="insight-box">
-                <strong>3️⃣ 절감 기회 (Cost Reduction Potential)</strong>
-                <ul>
-                    <li><strong>상당한 절감:</strong> 30.8% (4개: 한독, 다비, 그레이스, 제이디)</li>
-                    <li><strong>일부 가능:</strong> 46.2% (6개: 원익, 대림, 트릿지, 라이프, 차봇, 에이치)</li>
-                    <li><strong>이미 최적화:</strong> 7.7% (1개: 에이치지이니셔티브)</li>
-                    <li>📌 <strong>결론:</strong> 77%(10개)가 "비용절감" 수요 표시. 6개월 내 12~18% 절감 시나리오 가능.</li>
-                </ul>
-            </div>
-            
-            <div class="insight-box">
-                <strong>4️⃣ 지출 가시성(Visibility) 격차</strong>
-                <ul>
-                    <li><strong>실시간 관리:</strong> 23% (3개) — ERP 기반 실시간 대시보드 구축 기업</li>
-                    <li><strong>주기적 관리:</strong> 15% (2개) — 수동 집계, 월/분기 리포팅</li>
-                    <li><strong>요청시만:</strong> 46% (6개) — 의사결정 시 보고서 요청</li>
-                    <li><strong>관리 안함:</strong> 15% (2개) — 지출 추적 불가 상태</li>
-                    <li>📌 <strong>결론:</strong> 61%(8개)는 사전적 관리 불가. 반응적 구매만 가능. → 업무마켓9의 "GuideType 기반 프로액티브 공급자" 모델이 핵심 솔루션.</li>
-                </ul>
-            </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>구매 지표</th>
-                        <th>업계 기준(Level 3)</th>
-                        <th>세미나 평균</th>
-                        <th>Gap</th>
-                        <th>12개월 개선안</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>SUM 비율</strong></td>
-                        <td>60-70%</td>
-                        <td>~35%</td>
-                        <td>-35%</td>
-                        <td>50% (순증가 15%)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Maverick Spend</strong></td>
-                        <td>&lt;15%</td>
-                        <td>~40%</td>
-                        <td>+25%</td>
-                        <td>20% (절감폭 20%)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>P2P 사이클</strong></td>
-                        <td>1-2일</td>
-                        <td>8.3일+</td>
-                        <td>+6.3일</td>
-                        <td>3일 (효율 63% 개선)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Spend Visibility</strong></td>
-                        <td>실시간 80%+</td>
-                        <td>23%</td>
-                        <td>-57%</td>
-                        <td>60% (플랫폼 기반)</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
         <!-- CFO 니즈 매핑 -->
@@ -563,7 +481,7 @@
             
             <div class="grid grid-2">
                 <div class="card">
-                    <h3 class="card-title">✓ 미팅 의향 기업 (8개)</h3>
+                    <h3 class="card-title">✓ 추가 얘기 해볼 의향 있음 (8개)</h3>
                     <p style="font-size: 13px; color: #64748B; margin-bottom: 16px;">영업 성공률 높음 - 즉시 상담 가능</p>
                     <table style="font-size: 13px;">
                         <tr style="border-bottom: 1px solid #E9ECEF;">
@@ -685,8 +603,8 @@
                 </div>
                 
                 <div class="card" style="border-left: 4px solid #10B981;">
-                    <h3 style="color: #10B981; margin-bottom: 12px;">🟢 긍정 신호: 미팅 의향 62%</h3>
-                    <p>응답한 13개사 중 8개사(62%)가 후속 미팅을 명시적으로 수락. 이는 일반 B2B 세미나 평균(15~25%) 대비 2.5배 이상 높은 수치.</p>
+                    <h3 style="color: #10B981; margin-bottom: 12px;">🟢 긍정 신호: 의향 확인 62%</h3>
+                    <p>응답한 13개사 중 8개사(62%)가 추가 얘기 해볼 의향 있음을 명시. 이는 일반 B2B 세미나 평균(15~25%) 대비 2.5배 이상 높은 수치.</p>
                     <p style="margin-top: 12px; font-size: 13px; color: #64748B;"><strong>→ 결론:</strong> CFO 대상 세미나로서 매우 성공적. 비용절감 수요(77%)가 명확하므로, 다음 단계는 "ROI 계산기 기반 제안"으로 즉시 전환 가능.</p>
                 </div>
             </div>
@@ -767,7 +685,7 @@
         new Chart(meetingCtx, {
             type: 'doughnut',
             data: {
-                labels: ['미팅 의향 있음', '자료만 원함'],
+                labels: ['추가 얘기 해볼 의향 있음', '자료만 원함'],
                 datasets: [{
                     data: [8, 5],
                     backgroundColor: ['#10B981', '#6B7280'],
